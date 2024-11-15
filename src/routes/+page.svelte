@@ -1,4 +1,7 @@
 <script>
+	import { cartProducts } from '../runes/cartProducts.svelte.js';
+
+	// import { cartProducts } from "../runes/cartProducts.svelte";
 	export let data;
 
 	let searchValue = '';
@@ -64,12 +67,16 @@
 		selectedCategoryName = categoryFilterNAme;
 		fetchProducts('https://dummyjson.com/products');
 	}
+
+	function addProductToCart(product) {
+		cartProducts.push(product)
+	}
 </script>
 
 <div class="join flex justify-center">
 	<div>
 	  <div>
-		<input class="input input-bordered join-item" placeholder="Search" bind:value={searchValue} on:keypress={keypressEnter} />
+		<input class="input input-bordered join-item" placeholder="Search" bind:value={searchValue} onkeypress={keypressEnter} />
 	  </div>
 	</div>
 	<select class="select select-bordered join-item" bind:value={selectedCategoryName}>
@@ -78,13 +85,13 @@
 	  	<option value={categoryName}>{categoryName}</option>
 	  {/each}
 	</select>
-	<button class="btn join-item" disabled={loading} on:click={searchFunction}>
+	<button class="btn join-item" disabled={loading} onclick={searchFunction}>
 		{#if loading}
 			<span class="loading loading-spinner text-info"></span>
 		{/if}
 		Search</button>
 	{#if searchValue || selectedCategoryName !== categoryFilterNAme}
-	<button class="btn btn-info join-item" on:click={clearAllFilters}>Clear filter</button>
+	<button class="btn btn-info join-item" onclick={clearAllFilters}>Clear filter</button>
 	{/if}
 	
 </div>
@@ -95,7 +102,7 @@
     <p class="py-4">По запиту "{searchValue}" нічого не знайдено</p>
     <div class="modal-action">
       <form method="dialog">
-        <button class="btn" on:click={ () => (isOpenModal = false) }>Close</button>
+        <button class="btn" onclick={ () => (isOpenModal = false) }>Close</button>
       </form>
     </div>
   </div>
@@ -146,7 +153,12 @@
 					</td>
 					<td><strong>{product.price} $</strong></td>
 					<th>
-						<button class="btn">
+						<button 
+							class="btn"
+							onclick={() => {
+								addProductToCart(product);
+								}}
+						>
 							<svg
 								class="w-10 h-10"
 								viewBox="0 0 24 24"
