@@ -1,9 +1,6 @@
 <script>
-    import { cartProducts } from "../../runes/cartProducts.svelte";
-
-    function deleteProductFromCart(index) {
-        cartProducts.splice(index, 1);
-    }
+    import { createProductsCart } from "../../runes/cartProducts.svelte";
+    const { cartProducts, totalPrice, deleteProductFromCart } = createProductsCart();
 </script>
 
 <div style="text-align:center;">
@@ -71,9 +68,9 @@
           <tfoot>
             <tr>
               <th></th>
-              <th>Name</th>
-              <th>Job</th>
-              <th>Favorite Color</th>
+              <th></th>              
+              <th class="text-right">Total</th>
+              <th>${totalPrice}</th>
               <th></th>
             </tr>
           </tfoot>

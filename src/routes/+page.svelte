@@ -1,8 +1,8 @@
 <script>
-	import { cartProducts } from '../runes/cartProducts.svelte.js';
-
+	import { createProductsCart } from "../runes/cartProducts.svelte";
+	const { addProductToCart } = createProductsCart();
 	// import { cartProducts } from "../runes/cartProducts.svelte";
-	export let data;
+	let data = { products: [] };
 
 	let searchValue = '';
 	let categorysList = [];
@@ -68,9 +68,6 @@
 		fetchProducts('https://dummyjson.com/products');
 	}
 
-	function addProductToCart(product) {
-		cartProducts.push(product)
-	}
 </script>
 
 <div class="join flex justify-center">
