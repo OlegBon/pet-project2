@@ -11,22 +11,57 @@
 	let loading = false;
 	let isOpenModal = false;
 
+
+
+	fetch('https://dummyjson.com/products?limit=0')
+    .then(res => res.json())
+    .then(({ products }) => {
+        // console.log('products', products);
+
+        // products.forEach((element) => {
+        //     fetch('http://127.0.0.1:8000/api/product-create', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(element),
+        //     })
+        //     .then(res => res.json())
+        //     .then((product) => {
+        //         element.images.forEach((image_url) => {
+        //             fetch('http://127.0.0.1:8000/api/product-image', {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'Content-Type': 'application/json',
+        //                 },
+        //                 body: JSON.stringify({ 
+        //                     product_id: product.id, 
+        //                     url: image_url 
+        //                 }),
+        //             });
+        //         });
+        //     });
+        // }); 
+    });
+
+
 	function fetchProducts(url) {
 		loading = true;
 		fetch(url)
 			.then((res) => res.json())
 			.then((enterData) => {
-				if (!enterData.products.length) {
+				if (!enterData.length) {
 					isOpenModal = true;
 				} else {
-					data.products = enterData.products;
+					data.products = enterData;
 				}
 				loading = false;
 			});
 	}
 
 	$: if (searchValue === '') {
-		fetchProducts('https://dummyjson.com/products');
+		// fetchProducts('https://dummyjson.com/products');
+		fetchProducts('http://127.0.0.1:8000/api/products');
 	}
    
    function searchFunction() {
