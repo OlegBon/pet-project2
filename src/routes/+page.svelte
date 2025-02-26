@@ -103,6 +103,11 @@
 		fetchProducts('https://dummyjson.com/products');
 	}
 
+  // Функція для перенаправлення на сторінку продукту з встановленням поточного продукту
+  function goToProductPage(product) {
+    localStorage.setItem('currentProduct', JSON.stringify(product));
+    window.location.href = `/product/${product.id}`;
+  }
 </script>
 
 <div class="join flex justify-center">
@@ -165,7 +170,7 @@
 							<input type="checkbox" class="checkbox" />
 						</label>
 					</th>
-					<td>
+					<td onclick={() => goToProductPage(product)} style="cursor: pointer;">
 						<div class="flex items-center gap-3">
 							<div class="avatar">
 								<div class="mask mask-squircle h-12 w-12">
@@ -178,7 +183,7 @@
 							</div>
 						</div>
 					</td>
-					<td>
+					<td onclick={() => goToProductPage(product)} style="cursor: pointer;">
 						{product.description}
 						<br />
 						<span class="badge badge-ghost badge-sm">{product.warrantyInformation}</span>
