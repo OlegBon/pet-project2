@@ -1,5 +1,7 @@
 <script>
+	import { goto } from "$app/navigation";
 	import { createProductsCart } from "../runes/cartProducts.svelte";
+	import { setCurrentProduct } from "../runes/productStore.svelte";
 	const { addProductToCart } = createProductsCart();
 	// import { cartProducts } from "../runes/cartProducts.svelte";
 	let data = { products: [] };
@@ -105,8 +107,8 @@
 
   // Функція для перенаправлення на сторінку продукту з встановленням поточного продукту
   function goToProductPage(product) {
-    localStorage.setItem('currentProduct', JSON.stringify(product));
-    window.location.href = `/product/${product.id}`;
+    setCurrentProduct(product);
+    goto(`/product/${product.id}`);
   }
 </script>
 

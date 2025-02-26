@@ -3,14 +3,14 @@
 	import { page } from '$app/stores';
     import { createProductsCart } from "../../../runes/cartProducts.svelte";
   	import { get } from 'svelte/store';
+	import { getCurrentProduct } from '../../../runes/productStore.svelte';
 	const { addProductToCart } = createProductsCart();
 
     let product = {};
 
     onMount(async () => {
     const { id } = $page.params;
-    const storedProduct = localStorage.getItem('currentProduct');
-    const currentProduct = storedProduct ? JSON.parse(storedProduct) : null;
+    const currentProduct = getCurrentProduct();
 
     if (currentProduct && currentProduct.id === parseInt(id)) {
       product = currentProduct;
