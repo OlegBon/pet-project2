@@ -55,7 +55,10 @@
 				if (!enterData.length) {
 					isOpenModal = true;
 				} else {
-					data.products = enterData;
+					data.products = enterData.map((product) => {
+						product.count = 1;
+						return product;
+					});
 				}
 				loading = false;
 			});
@@ -106,9 +109,11 @@
 	}
 
   // Функція для перенаправлення на сторінку продукту з встановленням поточного продукту
-  function goToProductPage(product) {
-    setCurrentProduct(product);
-    goto(`/product/${product.id}`);
+  function goToProductPage(id) {
+    let currentProduct = data.products.find((product) => product.id === id);
+	console.log('currentProduct', currentProduct);
+	
+    goto(`/product/${id}`);
   }
 </script>
 
@@ -172,7 +177,7 @@
 							<input type="checkbox" class="checkbox" />
 						</label>
 					</th>
-					<td onclick={() => goToProductPage(product)} style="cursor: pointer;">
+					<td onclick={() => goToProductPage(product.id)} style="cursor: pointer;">
 						<div class="flex items-center gap-3">
 							<div class="avatar">
 								<div class="mask mask-squircle h-12 w-12">
@@ -185,7 +190,7 @@
 							</div>
 						</div>
 					</td>
-					<td onclick={() => goToProductPage(product)} style="cursor: pointer;">
+					<td onclick={() => goToProductPage(product.id)} style="cursor: pointer;">
 						{product.description}
 						<br />
 						<span class="badge badge-ghost badge-sm">{product.warrantyInformation}</span>

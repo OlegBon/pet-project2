@@ -49,7 +49,7 @@
                   <br />
                   <span class="badge badge-ghost badge-sm">{product.warrantyInformation}</span>
                 </td>
-                <td><strong>{product.price} $</strong></td>
+                <td><strong>{product.price * product.count} $</strong></td>
                 <th>
                     <button 
                     class="btn" onclick={() => deleteProductFromCart(index)}
