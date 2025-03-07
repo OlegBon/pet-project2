@@ -47,6 +47,38 @@
     });
 
 
+	fetch('https://dummyjson.com/users?limit=0')
+    .then(res => res.json())
+    .then(({ users }) => {
+        console.log('users', users);
+
+        // users.forEach((element) => {
+        //     fetch('http://127.0.0.1:8000/api/user-create', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(element),
+        //     })
+        //     .then(res => res.json())
+        //     .then((product) => {
+        //         element.image.forEach((image_url) => {
+        //             fetch('http://127.0.0.1:8000/api/user-image', {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'Content-Type': 'application/json',
+        //                 },
+        //                 body: JSON.stringify({ 
+        //                     product_id: product.id, 
+        //                     url: image_url 
+        //                 }),
+        //             });
+        //         });
+        //     });
+        // }); 
+    });
+
+
 	function fetchProducts(url) {
 		loading = true;
 		fetch(url)
