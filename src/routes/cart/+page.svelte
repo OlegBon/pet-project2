@@ -70,7 +70,7 @@
               <th></th>
               <th></th>              
               <th class="text-right">Total</th>
-              <th>${totalPrice}</th>
+              <th>${totalPrice(cartProducts)}</th>
               <th></th>
             </tr>
           </tfoot>
