@@ -1,6 +1,6 @@
 <script>
     import { createProductsCart } from "../../runes/cartProducts.svelte";
-    const { cartProducts, totalPrice, deleteProductFromCart } = createProductsCart();
+    const { cartProducts, totalPrice, deleteProductFromCart, clearCart, plusProductFromCart, minusProductFromCart } = createProductsCart();
 </script>
 
 <div style="text-align:center;">
@@ -16,9 +16,12 @@
                 </label>
               </th>
               <th>Name</th>
-              <th>Job</th>
-              <th>Favorite Color</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Count</th>
+              <!-- Додали стовпець для кількості -->
               <th></th>
+              <!-- Стовпець для кнопки видалення -->
             </tr>
           </thead>
           <tbody>
@@ -49,7 +52,18 @@
                   <br />
                   <span class="badge badge-ghost badge-sm">{product.warrantyInformation}</span>
                 </td>
-                <td><strong>{product.price * product.count} $</strong></td>
+
+                <!-- Ціна (однієї одиниці) -->
+                <td><strong>{product.price} $</strong></td>
+    
+                <!-- Кількість стовпців: кнопки та дисплей -->
+                <td>
+                  <button class="btn btn-xs" onclick={() => minusProductFromCart(index)}>-</button>
+                  <span class="mx-2">{product.count}</span>
+                  <button class="btn btn-xs" onclick={() => plusProductFromCart(index)}>+</button>
+                </td>
+    
+                <!-- Кнопка видалення всієї позиції -->
                 <th>
                     <button 
                     class="btn" onclick={() => deleteProductFromCart(index)}
