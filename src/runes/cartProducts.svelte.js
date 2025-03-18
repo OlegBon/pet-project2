@@ -54,7 +54,6 @@ export function createProductsCart() {
 			saveToLocalStorage();
 		},
 
-		// Добавляем новые методы:
 		plusProductFromCart(index) {
 			cartProducts[index].count++;
 			saveToLocalStorage();
@@ -63,7 +62,7 @@ export function createProductsCart() {
 			if (cartProducts[index].count > 1) {
 				cartProducts[index].count--;
 			} else {
-				// Если count становится 0, удаляем товар из корзины
+				// Якщо count стає 0, видаляємо товар з Cart
 				cartProducts.splice(index, 1);
 			}
 			saveToLocalStorage();

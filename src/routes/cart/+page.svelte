@@ -1,6 +1,67 @@
 <script>
     import { createProductsCart } from "../../runes/cartProducts.svelte";
     const { cartProducts, totalPrice, deleteProductFromCart, clearCart, plusProductFromCart, minusProductFromCart } = createProductsCart();
+
+    // Змінні для форми
+	let showOrderForm = false;
+	let name = '';
+	let phone = '';
+	let address = '';
+
+	function toggleOrderForm() {
+		showOrderForm = true; // Показати форму і приховати кнопку Order
+	}
+
+	async function submitOrder() {
+		// Збираємо дані форми
+		const items = cartProducts.map((p) => ({
+			id: p.id,
+			title: p.title,
+			price: p.price,
+			count: p.count
+		}));
+
+		const total = totalPrice(cartProducts);
+
+		// Створюємо об'єкт для відправлення
+		const orderData = {
+			name,
+			phone,
+			address,
+			items,
+			total
+		};
+
+		console.log('Order submitted:', orderData);
+
+		try {
+			// Відправляємо POST-запит на бекенд (Laravel)
+			const res = await fetch('http://127.0.0.1:8000/api/order-create', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(orderData)
+			});
+
+			if (!res.ok) {
+				throw new Error(`Server error: ${res.status}`);
+			}
+
+			const result = await res.json();
+			console.log('Order created successfully:', result);
+
+			clearCart(); // кошик очищено, localStorage оновлено
+
+			// Прикриваємо форму й очищаємо поля
+			showOrderForm = false;
+			name = '';
+			phone = '';
+			address = '';
+		} catch (error) {
+			console.error('Error creating order:', error);			
+		}
+	}
 </script>
 
 <div style="text-align:center;">
@@ -53,20 +114,17 @@
                   <span class="badge badge-ghost badge-sm">{product.warrantyInformation}</span>
                 </td>
 
-                <!-- Ціна (однієї одиниці) -->
                 <td><strong>{product.price} $</strong></td>
     
-                <!-- Кількість стовпців: кнопки та дисплей -->
                 <td>
-                  <button class="btn btn-xs" onclick={() => minusProductFromCart(index)}>-</button>
+                  <button class="btn btn-xs" on:click={() => minusProductFromCart(index)}>-</button>
                   <span class="mx-2">{product.count}</span>
-                  <button class="btn btn-xs" onclick={() => plusProductFromCart(index)}>+</button>
+                  <button class="btn btn-xs" on:click={() => plusProductFromCart(index)}>+</button>
                 </td>
     
-                <!-- Кнопка видалення всієї позиції -->
                 <th>
                     <button 
-                    class="btn" onclick={() => deleteProductFromCart(index)}
+                    class="btn" on:click={() => deleteProductFromCart(index)}
                 >
                 <svg class="v-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 7H20" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -90,4 +148,52 @@
           </tfoot>
         </table>
       </div>
+
+      <!-- Кнопка "Order" (показуємо тільки якщо showOrderForm == false і cartProducts.length > 0) -->
+	    {#if !showOrderForm && cartProducts.length > 0}
+        <button class="btn btn-primary q-mt-md" on:click={toggleOrderForm}> Order </button>
+      {/if}
+
+      <!-- Якщо showOrderForm, показуємо форму -->
+      {#if showOrderForm}
+        <!-- Блок форми-->
+        <div class="q-mt-md" style="max-width: 300px; margin: 0 auto; text-align: left;">
+          <form on:submit|preventDefault={submitOrder}>
+            <div class="q-mb-md">
+              <label>Name:</label>
+              <input
+                type="text"
+                bind:value={name}
+                placeholder="Your name"
+                class="input input-bordered w-full"
+                required
+              />
+            </div>
+            <div class="q-mb-md">
+              <label>Phone number:</label>
+              <input
+                type="text"
+                bind:value={phone}
+                placeholder="Your phone"
+                class="input input-bordered w-full"
+                required
+              />
+            </div>
+            <div class="q-mb-md">
+              <label>Address:</label>
+              <input
+                type="text"
+                bind:value={address}
+                placeholder="Your address"
+                class="input input-bordered w-full"
+                required
+              />
+            </div>
+            <!-- Кнопка Submit -->
+            <div style="margin-top: 1rem; text-align: center;">
+              <button type="submit" class="btn btn-success"> Submit </button>
+            </div>
+          </form>
+        </div>
+      {/if}
 </div>
