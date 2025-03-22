@@ -76,10 +76,10 @@
                   <input type="checkbox" class="checkbox" />
                 </label>
               </th>
-              <th>Name</th>
+              <th>Product	</th>
               <th>Description</th>
               <th>Price</th>
-              <th>Count</th>
+              <th style="width: 128px;">Count</th>
               <!-- Додали стовпець для кількості -->
               <th></th>
               <!-- Стовпець для кнопки видалення -->
@@ -140,9 +140,19 @@
           <tfoot>
             <tr>
               <th></th>
+              <th>Product	</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Count</th>
+              <!-- Додали стовпець для кількості -->
+              <th></th>
+              <!-- Стовпець для кнопки видалення -->
+            </tr>
+            <tr>
+              <th></th>
               <th></th>              
-              <th class="text-right">Total</th>
-              <th>${totalPrice(cartProducts)}</th>
+              <th class="text-right"><strong>Total</strong></th>
+              <th><strong>${totalPrice(cartProducts)}</strong></th>
               <th></th>
             </tr>
           </tfoot>

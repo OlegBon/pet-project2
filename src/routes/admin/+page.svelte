@@ -1,111 +1,123 @@
 <script>
-//     let data = { orders: [] };
-
-// let loading = false;
-// let isOpenModal = false;
-// let searchValue = '';
-
-// function fetchOrders(url) {
-//     loading = true;
-//     fetch(url)
-//         .then((res) => res.json())
-//         .then((enterData) => {
-//             if (!enterData.length) {
-//                 isOpenModal = true;
-//             } else {
-//                 data.orders = enterData;
-//             }
-//             loading = false;
-//             // console.log('data.orders:', data.orders);
-//         });            
-// }
-
-// $: if (searchValue === '') {
-//     fetchOrders('http://127.0.0.1:8000/api/orders');
-// }
+	import { goto } from '$app/navigation';
     
-    import { onMount } from 'svelte';
- 	import { goto } from '$app/navigation';
- 
- 	let orders = [];
- 
- 	onMount(async () => {
- 		const res = await fetch('http://127.0.0.1:8000/api/orders');
- 		orders = await res.json();
- 	});
- 
- 	function editOrder(id) {
- 		goto(`/admin/order/${id}`);
- 	}
- 
- 	async function deleteOrder(id) {
- 		try {
+	let data = { orders: [] };
+
+	let loading = false;
+	let isOpenModal = false;
+	let searchValue = '';
+
+	function fetchOrders(url) {
+		loading = true;
+		fetch(url)
+			.then((res) => res.json())
+			.then((enterData) => {
+				if (!enterData.length) {
+					isOpenModal = true;
+				} else {
+					data.orders = enterData;
+				}
+				loading = false;
+			});            
+	}
+
+	$: if (searchValue === '') {
+		fetchOrders(`http://127.0.0.1:8000/api/orders`);
+	}
+
+	async function deleteOrder(id) {
+		try {
  			// Надсилаємо DELETE-запит на сервер
- 			const res = await fetch(`http://127.0.0.1:8000/api/order/${id}`, {
- 				method: 'DELETE',
- 				headers: {
- 					'Content-Type': 'application/json'
- 				}
- 			});
- 
- 			if (res.ok) {
+			const res = await fetch(`http://127.0.0.1:8000/api/order/${id}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
+			if (res.ok) {
  				// Видаляємо замовлення з локального масиву
- 				orders = orders.filter((o) => o.id !== id);
- 			} else {
- 				console.error('Error deleting order:', await res.text());
- 			}
- 		} catch (err) {
- 			console.error('Error deleting order:', err);
- 		}
- 	}
+				data.orders = data.orders.filter((o) => o.id !== id);
+			} else {
+				console.error('Error deleting order:', await res.text());
+			}
+		} catch (err) {
+			console.error('Error deleting order:', err);
+		}
+	}
 </script>
 
 <div style="text-align:center;">
-    <!-- <h1>Welcome to Admin Panel</h1>
-    <div style="text-align:left;">
-        {#each data.orders as order, index}
-            <div class="card" style="margin: 10px;">
-                <div class="card-body">
-                    <h2>Order: {order.id}</h2>
-                    <p>Name: {order.name}, Phone: {order.phone}, Address: {order.address}</p>
-                    <p>Details:</p>
-                    {#each order.items as item}
-                        <p>{item.title} - {item.price} x {item.count}</p>
-                    {/each}
-                    <p>Total: {order.total}</p>
-                </div>
-            </div>
-         {/each}
-    </div> -->
-
-    <h3 class="page-title">Orders List</h3>
- {#if orders.length === 0}
- 	<p>No orders found.</p>
- {:else}
- 	<table class="orders-table">
- 		<thead>
- 			<tr>
- 				<th>ID</th>
- 				<th>Customer Name</th>
- 				<th>Total</th>
- 				<th>Status</th>
- 				<th>Actions</th>
- 			</tr>
- 		</thead>
- 		<tbody>
- 			{#each orders as order}
- 				<tr>
- 					<td>{order.id}</td>
- 					<td>{order.name}</td>
- 					<td>{order.total}</td>
- 					<td>{order.status}</td>
- 					<td>
- 						<button class="edit-btn" on:click={() => editOrder(order.id)}>Edit</button>
- 						<button class="delete-btn" on:click={() => deleteOrder(order.id)}>Delete</button>
- 					</td>
- 				</tr>
- 			{/each}
- 		</tbody>
- 	</table>
- {/if}
+    <h1 class="page-title adm-h1">Welcome to Admin Panel</h1>
+	<h2 class="page-title">Orders List</h2>
+    <div class="overflow-x-auto margin-top-20">
+		<table class="table">
+				<!-- head -->
+				<thead>
+					<tr>
+						<th>
+							<label>
+								<input type="checkbox" class="checkbox" />
+							</label>
+						</th>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Total</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- row 1 -->
+					{#each data.orders as order}
+						<tr>
+							<th>
+								<label>
+									<input type="checkbox" class="checkbox" />
+								</label>
+							</th>
+							<td>{order.id}</td>
+							<td>{order.name}</td>
+							<td>{order.total}</td>
+							<td>{order.status}</td>
+							<td>
+								<button class="btn" on:click={() => goto(`/admin/order/${order.id}`)}>
+									<svg class="w-10 h-10" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<title/>										
+										<g id="Complete">										
+										<g id="edit">										
+										<g>										
+										<path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+										<polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+										</g>										
+										</g>										
+										</g>										
+									</svg>
+								</button>
+								<button class="btn" on:click={() => deleteOrder(order.id)}>
+									<svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M10 12V17" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+										<path d="M14 12V17" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+										<path d="M4 7H20" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+										<path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+										<path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+								</button>
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+				<!-- foot -->
+				<tfoot>
+					<tr>
+						<th></th>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Total</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+				</tfoot>
+			</table>
+	</div>
 </div>
