@@ -26,3 +26,11 @@
 .btn-center {
 	margin: 0 auto;
 }
+
+.adm-header-txt {
+	margin-right: 20px;
+}
+
+.adm-header-bg {
+	background-color: aqua;
+}

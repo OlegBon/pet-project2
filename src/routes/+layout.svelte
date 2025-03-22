@@ -2,8 +2,12 @@
     import "../app.css";
     import { createProductsCart } from "../runes/cartProducts.svelte";
     const cart = createProductsCart();
-  </script>
-  
+
+    import { page } from '$app/stores';
+    $: currentRoute = $page.url.pathname; // Отримує поточний маршрут
+</script>
+
+  {#if currentRoute !== '/admin' && !currentRoute.startsWith('/admin/')}
   <div class="navbar bg-base-300">
     <div class="flex-1">
       <a class="btn btn-ghost text-xl" href="/">daisyUI</a>
@@ -63,5 +67,6 @@
       </div>
     </div>
   </div>
+{/if}
 
   <slot />
