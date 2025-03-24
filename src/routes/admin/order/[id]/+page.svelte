@@ -1,5 +1,6 @@
 <script>
     import { page } from '$app/state';
+	import { formatDate } from '../../../../utils/dateUtils';
 
 	let orderId = page.params.id;
 
@@ -191,6 +192,8 @@
 					<th>Title</th>
 					<th>Price</th>
 					<th>Count</th>
+					<th>Created</th>
+					<th>Updated</th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -205,6 +208,8 @@
 						<td>{item.title}</td>
 						<td>{item.price}</td>
 						<td><input type="number" min="1" bind:value={item.count} /></td>
+						<td>{formatDate(item.created_at)}</td>
+						<td>{formatDate(item.updated_at)}</td>
 						<td><button class="btn" on:click={() => removeItem(item, index)}>
 							<svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path d="M10 12V17" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -227,6 +232,8 @@
 					<th>Title</th>
 					<th>Price</th>
 					<th>Count</th>
+					<th>Created</th>
+					<th>Updated</th>
 					<th></th>
 					<th></th>
 				</tr>
