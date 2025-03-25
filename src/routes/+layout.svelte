@@ -33,6 +33,7 @@
         </div>
         <div
           tabindex="0"
+          role="button"
           class="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
           <div class="card-body">
             <span class="text-lg font-bold">{cart.countProductsInCart}</span>
@@ -53,6 +54,7 @@
         </div>
         <ul
           tabindex="0"
+          role="menu"
           class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
           <li>
             <a class="justify-between">
