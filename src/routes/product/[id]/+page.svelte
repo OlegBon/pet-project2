@@ -43,6 +43,7 @@
         <p><span>Warranty:</span> {product.warrantyInformation}</p>
         <button 
             class="btn btn-square btn-center"
+            aria-label="Add to cart"
             onclick={() => {
                 addProductToCart(product);
                 }}
