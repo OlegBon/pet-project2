@@ -165,8 +165,8 @@
 						<td>{data.order.phone}</td>
 						<td>{data.order.address}</td>
 						<td>
-							<label></label>
-							<select bind:value={data.order.status}>
+							<label for="orderStatus">Status:</label>
+							<select id="orderStatus" bind:value={data.order.status}>
 								<option value="pending">Pending</option>
 								<option value="processing">Processing</option>
 								<option value="completed">Completed</option>
@@ -212,7 +212,7 @@
 						<td><input type="number" min="1" bind:value={item.count} /></td>
 						<td>{formatDate(item.created_at)}</td>
 						<td>{formatDate(item.updated_at)}</td>
-						<td><button class="btn" on:click={() => removeItem(item, index)}>
+						<td><button class="btn" aria-labelledby="Delete" on:click={() => removeItem(item, index)}>
 							<svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path d="M10 12V17" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 								<path d="M14 12V17" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
