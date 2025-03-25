@@ -124,7 +124,7 @@
     
                 <th>
                     <button 
-                    class="btn" on:click={() => deleteProductFromCart(index)}
+                    class="btn" aria-label="Delete" on:click={() => deleteProductFromCart(index)}
                 >
                 <svg class="v-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 7H20" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -160,7 +160,7 @@
       </div>
 
       <!-- Кнопка "Order" (показуємо тільки якщо showOrderForm == false і cartProducts.length > 0) -->
-	    {#if !showOrderForm && cartProducts.length > 0}
+      {#if !showOrderForm && cartProducts.length > 0}
         <button class="btn btn-primary q-mt-md" on:click={toggleOrderForm}> Order </button>
       {/if}
 
@@ -170,8 +170,9 @@
         <div class="q-mt-md" style="max-width: 300px; margin: 0 auto; text-align: left;">
           <form on:submit|preventDefault={submitOrder}>
             <div class="q-mb-md">
-              <label>Name:</label>
+              <label for="name">Name:</label>
               <input
+                id="name"
                 type="text"
                 bind:value={name}
                 placeholder="Your name"
@@ -180,8 +181,9 @@
               />
             </div>
             <div class="q-mb-md">
-              <label>Phone number:</label>
+              <label for="phone">Phone number:</label>
               <input
+                id="phone"
                 type="text"
                 bind:value={phone}
                 placeholder="Your phone"
@@ -190,8 +192,9 @@
               />
             </div>
             <div class="q-mb-md">
-              <label>Address:</label>
+              <label for="address">Address:</label>
               <input
+                id="address"
                 type="text"
                 bind:value={address}
                 placeholder="Your address"
