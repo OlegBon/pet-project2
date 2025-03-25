@@ -142,7 +142,9 @@
 
 	<!-- Поля замовлення -->
 	<h3 class="page-title">Order Data</h3>
-	<div class="overflow-x-auto">
+	<!-- <div class="overflow-x-auto"> -->
+	 <!-- overflow-x-auto додає скрол таблиці -->
+	 <div>
 		<table class="table margin-top-20">
 			<!-- head -->
 			<thead>
