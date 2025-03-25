@@ -1,5 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import { formatDate } from '../../utils/dateUtils';
     
 	let data = { orders: [] };
@@ -25,9 +26,16 @@
 			});            
 	}
 
-	$: if (searchValue === '') {
-		fetchOrders(`http://127.0.0.1:8000/api/orders`);
-	}
+	// $: if (searchValue === '') {
+	// 	fetchOrders(`http://127.0.0.1:8000/api/orders`);
+	// }
+
+	// Викликаємо fetchOrders тільки після завантаження компонента
+    onMount(() => {
+        if (searchValue === '') {
+            fetchOrders(`http://127.0.0.1:8000/api/orders`);
+        }
+    });
 
 	async function deleteOrder(id) {
 		try {
