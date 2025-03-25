@@ -1,7 +1,8 @@
 <script>
 	import { goto } from "$app/navigation";
+	import { onMount } from "svelte";
 	import { createProductsCart } from "../runes/cartProducts.svelte";
-	import { setCurrentProduct } from "../runes/productStore.svelte";
+	// import { setCurrentProduct } from "../runes/productStore.svelte";
 	const { addProductToCart } = createProductsCart();
 	// import { cartProducts } from "../runes/cartProducts.svelte";
 	let data = { products: [] };
@@ -15,36 +16,36 @@
 
 
 
-	fetch('https://dummyjson.com/products?limit=0')
-    .then(res => res.json())
-    .then(({ products }) => {
-        // console.log('products', products);
+	// fetch('https://dummyjson.com/products?limit=0')
+    // .then(res => res.json())
+    // .then(({ products }) => {
+    //     // console.log('products', products);
 
-        // products.forEach((element) => {
-        //     fetch('http://127.0.0.1:8000/api/product-create', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify(element),
-        //     })
-        //     .then(res => res.json())
-        //     .then((product) => {
-        //         element.images.forEach((image_url) => {
-        //             fetch('http://127.0.0.1:8000/api/product-image', {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Content-Type': 'application/json',
-        //                 },
-        //                 body: JSON.stringify({ 
-        //                     product_id: product.id, 
-        //                     url: image_url 
-        //                 }),
-        //             });
-        //         });
-        //     });
-        // }); 
-    });
+    //     // products.forEach((element) => {
+    //     //     fetch('http://127.0.0.1:8000/api/product-create', {
+    //     //         method: 'POST',
+    //     //         headers: {
+    //     //             'Content-Type': 'application/json',
+    //     //         },
+    //     //         body: JSON.stringify(element),
+    //     //     })
+    //     //     .then(res => res.json())
+    //     //     .then((product) => {
+    //     //         element.images.forEach((image_url) => {
+    //     //             fetch('http://127.0.0.1:8000/api/product-image', {
+    //     //                 method: 'POST',
+    //     //                 headers: {
+    //     //                     'Content-Type': 'application/json',
+    //     //                 },
+    //     //                 body: JSON.stringify({ 
+    //     //                     product_id: product.id, 
+    //     //                     url: image_url 
+    //     //                 }),
+    //     //             });
+    //     //         });
+    //     //     });
+    //     // }); 
+    // });
 
 
 	// fetch('https://dummyjson.com/users?limit=0')
@@ -96,14 +97,24 @@
 			});
 	}
 
-	$: if (searchValue === '') {
-		// fetchProducts('https://dummyjson.com/products');
-		fetchProducts('http://127.0.0.1:8000/api/products');
-	}
-   
-   function searchFunction() {
+	// $: if (searchValue === '') {
+	// 	// fetchProducts('https://dummyjson.com/products');
+	// 	fetchProducts('http://127.0.0.1:8000/api/products');
+	// }
+
+	// Викликаємо fetchOrders тільки після завантаження компонента
+	onMount(() => {
+        if (searchValue === '') {
+            // fetchProducts('https://dummyjson.com/products');
+			fetchProducts('http://127.0.0.1:8000/api/products');
+        }
+    });
+
+	function searchFunction() {
 		if (searchValue) {
-			fetchProducts(`https://dummyjson.com/products/search?q=${searchValue}`)
+			onMount(() => {
+				fetchProducts(`https://dummyjson.com/products/search?q=${searchValue}`)
+			});
 		} else if (selectedCategoryName !== categoryFilterNAme) {
 			getProductsByCategory(selectedCategoryName);
 		}
@@ -117,49 +128,55 @@
 
 	// Get product category List
 	(function getProductCategoryList() {
-		fetch('https://dummyjson.com/products/category-list')
-		.then(res => res.json())
-		.then(function (categories) {
-			categorysList = categories;
+		onMount(() => {
+			fetch('https://dummyjson.com/products/category-list')
+				.then(res => res.json())
+				.then(function (categories) {
+					categorysList = categories;
+				});
 		});
 	})();
 
 	function getProductsByCategory(categoryName) {
 		loading = true;
-		fetch(`https://dummyjson.com/products/category/${categoryName}`)
-			.then(res => res.json())
-			.then((enterData) => {
-				data.products = enterData.products;
-				loading = false;
-			});
+		onMount(() => {
+			fetch(`https://dummyjson.com/products/category/${categoryName}`)
+				.then(res => res.json())
+				.then((enterData) => {
+					data.products = enterData.products;
+					loading = false;
+				});
+		});
 	}
 
 	function clearAllFilters() {
 		searchValue = '';
 		selectedCategoryName = categoryFilterNAme;
-		fetchProducts('https://dummyjson.com/products');
+		onMount(() => {
+			fetchProducts('https://dummyjson.com/products');
+		});
 	}
 
-  // Функція для перенаправлення на сторінку продукту з встановленням поточного продукту
-  function goToProductPage(id) {
-    let currentProduct = data.products.find((product) => product.id === id);
-	console.log('currentProduct', currentProduct);
+	// Функція для перенаправлення на сторінку продукту з встановленням поточного продукту
+	function goToProductPage(id) {
+		let currentProduct = data.products.find((product) => product.id === id);
+		console.log('currentProduct', currentProduct);
 	
-    goto(`/product/${id}`);
-  }
+		goto(`/product/${id}`);
+	}
 </script>
 
 <div class="join flex justify-center">
 	<div>
-	  <div>
-		<input class="input input-bordered join-item" placeholder="Search" bind:value={searchValue} onkeypress={keypressEnter} />
-	  </div>
+		<div>
+			<input class="input input-bordered join-item" placeholder="Search" bind:value={searchValue} onkeypress={keypressEnter} />
+		</div>
 	</div>
 	<select class="select select-bordered join-item" bind:value={selectedCategoryName}>
-	  <option disabled selected>{categoryFilterNAme}</option>
-	  {#each categorysList as categoryName}
-	  	<option value={categoryName}>{categoryName}</option>
-	  {/each}
+		<option disabled selected>{categoryFilterNAme}</option>
+			{#each categorysList as categoryName}
+				<option value={categoryName}>{categoryName}</option>
+			{/each}
 	</select>
 	<button class="btn join-item" disabled={loading} onclick={searchFunction}>
 		{#if loading}
@@ -173,15 +190,15 @@
 </div>
 
 <dialog class="modal" open={isOpenModal}>
-  <div class="modal-box">
-    <h3 class="text-lg font-bold">Warning!</h3>
-    <p class="py-4">По запиту "{searchValue}" нічого не знайдено</p>
-    <div class="modal-action">
-      <form method="dialog">
-        <button class="btn" onclick={ () => (isOpenModal = false) }>Close</button>
-      </form>
-    </div>
-  </div>
+	<div class="modal-box">
+		<h3 class="text-lg font-bold">Warning!</h3>
+		<p class="py-4">По запиту "{searchValue}" нічого не знайдено</p>
+		<div class="modal-action">
+			<form method="dialog">
+				<button class="btn" onclick={ () => (isOpenModal = false) }>Close</button>
+			</form>
+		</div>
+	</div>
 </dialog>
 
 <div class="overflow-x-auto">
@@ -231,6 +248,7 @@
 					<th>
 						<button 
 							class="btn"
+							aria-label="Add product to cart"
 							onclick={() => {
 								addProductToCart(product);
 								}}
