@@ -112,9 +112,7 @@
 
 	function searchFunction() {
 		if (searchValue) {
-			onMount(() => {
-				fetchProducts(`https://dummyjson.com/products/search?q=${searchValue}`)
-			});
+			fetchProducts(`https://dummyjson.com/products/search?q=${searchValue}`)
 		} else if (selectedCategoryName !== categoryFilterNAme) {
 			getProductsByCategory(selectedCategoryName);
 		}
@@ -128,39 +126,33 @@
 
 	// Get product category List
 	(function getProductCategoryList() {
-		onMount(() => {
-			fetch('https://dummyjson.com/products/category-list')
-				.then(res => res.json())
-				.then(function (categories) {
-					categorysList = categories;
-				});
-		});
+		fetch('https://dummyjson.com/products/category-list')
+			.then(res => res.json())
+			.then(function (categories) {
+				categorysList = categories;
+			});
 	})();
 
 	function getProductsByCategory(categoryName) {
 		loading = true;
-		onMount(() => {
-			fetch(`https://dummyjson.com/products/category/${categoryName}`)
-				.then(res => res.json())
-				.then((enterData) => {
-					data.products = enterData.products;
-					loading = false;
-				});
-		});
+		fetch(`https://dummyjson.com/products/category/${categoryName}`)
+			.then(res => res.json())
+			.then((enterData) => {
+				data.products = enterData.products;
+				loading = false;
+			});
 	}
 
 	function clearAllFilters() {
 		searchValue = '';
 		selectedCategoryName = categoryFilterNAme;
-		onMount(() => {
-			fetchProducts('https://dummyjson.com/products');
-		});
+		fetchProducts('https://dummyjson.com/products');
 	}
 
 	// Функція для перенаправлення на сторінку продукту з встановленням поточного продукту
 	function goToProductPage(id) {
 		let currentProduct = data.products.find((product) => product.id === id);
-		console.log('currentProduct', currentProduct);
+		// console.log('currentProduct', currentProduct);
 	
 		goto(`/product/${id}`);
 	}
