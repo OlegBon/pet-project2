@@ -243,6 +243,18 @@
 						{product.description}
 						<br />
 						<span class="badge badge-ghost badge-sm">{product.warrantyInformation}</span>
+						{#if product.product_quantity >= 100}
+							<span class="badge badge-primary badge-sm">In stock</span>
+						{/if}
+						{#if product.product_quantity < 100 && product.product_quantity > 10}
+							<span class="badge badge-warning badge-sm">Still in stock</span>
+						{/if}
+						{#if product.product_quantity <= 0}
+							<span class="badge badge-success badge-sm">Out of stock</span>
+						{/if}
+						{#if product.product_quantity > 0 && product.product_quantity <= 10}
+							<span class="badge badge-info badge-sm">Only {product.product_quantity} left</span>
+						{/if}						
 					</td>
 					<td><strong>{product.price} $</strong></td>
 					<th>

@@ -38,6 +38,18 @@
         {/each}
       </div>
       <div class="flex flex-col gap-2 product-txt">
+        {#if product.product_quantity >= 100}
+          <span class="badge badge-primary badge-sm">In stock</span>
+        {/if}
+        {#if product.product_quantity < 100 && product.product_quantity > 10}
+          <span class="badge badge-warning badge-sm">Still in stock</span>
+        {/if}
+        {#if product.product_quantity <= 0}
+          <span class="badge badge-success badge-sm">Out of stock</span>
+        {/if}
+        {#if product.product_quantity > 0 && product.product_quantity <= 10}
+          <span class="badge badge-info badge-sm">Only {product.product_quantity} left</span>
+        {/if}	
         <p><span>Description:</span> {product.description}</p>
         <p><span>Price:</span> {product.price} $</p>
         <p><span>Warranty:</span> {product.warrantyInformation}</p>
