@@ -133,6 +133,7 @@
 						<th>Name</th>
 						<th>Total</th>
 						<th>Status</th>
+						<th>Delivery Method</th>
 						<th>Created</th>
 						<th>Updated</th>
 						<th></th>
@@ -156,6 +157,7 @@
 							<td>{order.name}</td>
 							<td>{order.total}</td>
 							<td>{order.status}</td>
+							<td>{order.delivery_method}</td>
 							<td>{formatDate(order.created_at)}</td>
 							<td>{formatDate(order.updated_at)}</td>
 							<td>
@@ -193,6 +195,7 @@
 						<th>Name</th>
 						<th>Total</th>
 						<th>Status</th>
+						<th>Delivery Method</th>
 						<th>Created</th>
 						<th>Updated</th>
 						<th></th>

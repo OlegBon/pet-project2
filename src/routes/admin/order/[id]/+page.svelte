@@ -150,9 +150,9 @@
 			<thead>
 				<tr>
 					<th></th>
+					<th>Name</th>
 					<th>Phone</th>
-					<th>Address</th>
-					<th>Total</th>
+					<th>Delivery Method</th>
 					<th>Status</th>
 					<th></th>
 				</tr>
@@ -163,7 +163,7 @@
 						<td></td>
 						<td>{data.order.name}</td>
 						<td>{data.order.phone}</td>
-						<td>{data.order.address}</td>
+						<td>{data.order.delivery_method}</td>
 						<td>
 							<label for="orderStatus">Status:</label>
 							<select id="orderStatus" bind:value={data.order.status}>
