@@ -26,6 +26,11 @@ export function createProductsCart() {
 			return cartProducts.reduce((acc, item) => acc + (item.count || 1), 0);
 		},
 
+		isProductInCart(productId) {
+			// Логіка перевірки наявності товару в корзині
+			return cartProducts.some((product) => product.id === productId);
+		},
+
 		clearCart() {
 			cartProducts.splice(0, cartProducts.length);
 			saveToLocalStorage();
