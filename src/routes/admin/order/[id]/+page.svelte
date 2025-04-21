@@ -129,128 +129,133 @@
 </script>
 
 <div style="text-align:center;">
-    {#if data.order}
-	<h1 class="page-title adm-h1">Edit Order #{data.order.id}</h1>
-
-	<!-- Повідомлення -->
-	{#if successMessage}
-		<p class="success-msg margin-20-auto">{successMessage}</p>
+	{#if loading}
+		<span class="loading loading-spinner text-info" style="margin: 200px auto; display: block"></span>
 	{/if}
-	{#if errorMessage}
-		<p class="error-msg margin-20-auto">{errorMessage}</p>
+	{#if !loading}
+		{#if data.order}
+		<h1 class="page-title adm-h1">Edit Order #{data.order.id}</h1>
+
+		<!-- Повідомлення -->
+		{#if successMessage}
+			<p class="success-msg margin-20-auto">{successMessage}</p>
+		{/if}
+		{#if errorMessage}
+			<p class="error-msg margin-20-auto">{errorMessage}</p>
+		{/if}
+
+		<!-- Поля замовлення -->
+		<h3 class="page-title">Order Data</h3>
+		<!-- <div class="overflow-x-auto"> -->
+		<!-- overflow-x-auto додає скрол таблиці -->
+		<div>
+			<table class="table margin-top-20">
+				<!-- head -->
+				<thead>
+					<tr>
+						<th></th>
+						<th>Name</th>
+						<th>Phone</th>
+						<th>Delivery Method</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- row 1 -->
+						<tr>
+							<td></td>
+							<td>{data.order.name}</td>
+							<td>{data.order.phone}</td>
+							<td>{data.order.delivery_method}</td>
+							<td>
+								<label for="orderStatus">Status:</label>
+								<select id="orderStatus" bind:value={data.order.status}>
+									<option value="pending">Pending</option>
+									<option value="processing">Processing</option>
+									<option value="completed">Completed</option>
+									<option value="cancelled">Cancelled</option>
+								</select>
+							</td>
+							<td></td>
+						</tr>
+				</tbody>
+				<!-- foot -->
+				<tfoot>
+				</tfoot>
+			</table>
+		</div>
+
+		<h3 class="page-title margin-top-40">Order Details</h3>
+		<div class="overflow-x-auto">
+			<table class="table margin-top-20">
+				<!-- head -->
+				<thead>
+					<tr>
+						<th></th>
+						<th>ID</th>
+						<th>Product ID</th>
+						<th>Title</th>
+						<th>Price</th>
+						<th>Count</th>
+						<th>Created</th>
+						<th>Updated</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- row 1 -->
+					{#each data.order.items as item, index}
+						<tr>
+							<td></td>
+							<td>{item.id}</td>
+							<td><input type="number" bind:value={item.product_id} /></td>
+							<td>{item.title}</td>
+							<td>{item.price}</td>
+							<td><input type="number" min="1" bind:value={item.count} /></td>
+							<td>{formatDate(item.created_at)}</td>
+							<td>{formatDate(item.updated_at)}</td>
+							<td><button class="btn" aria-labelledby="Delete" on:click={() => removeItem(item, index)}>
+								<svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10 12V17" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M14 12V17" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M4 7H20" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+							</button></td>
+							<td></td>
+						</tr>
+					{/each}
+				</tbody>
+				<!-- foot -->
+				<tfoot>
+					<tr>
+						<th></th>
+						<th>ID</th>
+						<th>Product ID</th>
+						<th>Title</th>
+						<th>Price</th>
+						<th>Count</th>
+						<th>Created</th>
+						<th>Updated</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+		<p class="margin-top-20">* У базі 194 ID товарів (продуктів). Коли додаєте товар, він з'явиться в таблиці, якщо його ID не більше 194.</p>
+
+		<button class="btn btn-active btn-primary margin-top-40" on:click={addItem}>Add Product</button>
+
+		<button class="btn btn-active btn-warning" on:click={updateOrder}>Save Order</button>
+		{:else if errorMessage}
+			<p class="error-msg">{errorMessage}</p>
+		{:else}
+			<p class="loading-msg">Loading order...</p>
+		{/if}
 	{/if}
-
-	<!-- Поля замовлення -->
-	<h3 class="page-title">Order Data</h3>
-	<!-- <div class="overflow-x-auto"> -->
-	 <!-- overflow-x-auto додає скрол таблиці -->
-	 <div>
-		<table class="table margin-top-20">
-			<!-- head -->
-			<thead>
-				<tr>
-					<th></th>
-					<th>Name</th>
-					<th>Phone</th>
-					<th>Delivery Method</th>
-					<th>Status</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- row 1 -->
-					<tr>
-						<td></td>
-						<td>{data.order.name}</td>
-						<td>{data.order.phone}</td>
-						<td>{data.order.delivery_method}</td>
-						<td>
-							<label for="orderStatus">Status:</label>
-							<select id="orderStatus" bind:value={data.order.status}>
-								<option value="pending">Pending</option>
-								<option value="processing">Processing</option>
-								<option value="completed">Completed</option>
-								<option value="cancelled">Cancelled</option>
-							</select>
-						</td>
-						<td></td>
-					</tr>
-			</tbody>
-			<!-- foot -->
-			<tfoot>
-			</tfoot>
-		</table>
-	</div>
-
-	<h3 class="page-title margin-top-40">Order Details</h3>
-	<div class="overflow-x-auto">
-		<table class="table margin-top-20">
-			<!-- head -->
-			<thead>
-				<tr>
-					<th></th>
-					<th>ID</th>
-					<th>Product ID</th>
-					<th>Title</th>
-					<th>Price</th>
-					<th>Count</th>
-					<th>Created</th>
-					<th>Updated</th>
-					<th></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- row 1 -->
-				{#each data.order.items as item, index}
-					<tr>
-						<td></td>
-						<td>{item.id}</td>
-						<td><input type="number" bind:value={item.product_id} /></td>
-						<td>{item.title}</td>
-						<td>{item.price}</td>
-						<td><input type="number" min="1" bind:value={item.count} /></td>
-						<td>{formatDate(item.created_at)}</td>
-						<td>{formatDate(item.updated_at)}</td>
-						<td><button class="btn" aria-labelledby="Delete" on:click={() => removeItem(item, index)}>
-							<svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<path d="M10 12V17" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								<path d="M14 12V17" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								<path d="M4 7H20" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								<path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								<path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#0000FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-							</svg>
-						</button></td>
-						<td></td>
-					</tr>
-				{/each}
-			</tbody>
-			<!-- foot -->
-			<tfoot>
-				<tr>
-					<th></th>
-					<th>ID</th>
-					<th>Product ID</th>
-					<th>Title</th>
-					<th>Price</th>
-					<th>Count</th>
-					<th>Created</th>
-					<th>Updated</th>
-					<th></th>
-					<th></th>
-				</tr>
-			</tfoot>
-		</table>
-	</div>
-
-	<p class="margin-top-20">* У базі 194 ID товарів (продуктів). Коли додаєте товар, він з'явиться в таблиці, якщо його ID не більше 194.</p>
-
-	<button class="btn btn-active btn-primary margin-top-40" on:click={addItem}>Add Product</button>
-
-	<button class="btn btn-active btn-warning" on:click={updateOrder}>Save Order</button>
-    {:else if errorMessage}
-        <p class="error-msg">{errorMessage}</p>
-    {:else}
-        <p class="loading-msg">Loading order...</p>
-    {/if}
 </div>

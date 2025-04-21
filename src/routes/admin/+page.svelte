@@ -105,7 +105,11 @@
 <div style="text-align:center;">
     <h1 class="page-title adm-h1">Welcome to Admin Panel</h1>
 	<h2 class="page-title">Orders List</h2>
-    <div class="overflow-x-auto margin-top-20" style="text-align: left;">
+	{#if loading}
+		<span class="loading loading-spinner text-info" style="margin: 200px auto; display: block"></span>
+	{/if}
+	{#if !loading}
+	<div class="overflow-x-auto margin-top-20" style="text-align: left;">
 		<button class="btn btn-active btn-primary" style="margin-left: 80px;;" on:click={deleteSelectedOrders}>
 			<svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M10 12V17" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -203,4 +207,5 @@
 				</tfoot>
 			</table>
 	</div>
+{/if}
 </div>
