@@ -1,6 +1,9 @@
 <script>
+	import { onMount } from "svelte";
   import NovaPoshtaSelector from "../../components/NovaPoshtaSelector.svelte";
   import { createProductsCart } from "../../runes/cartProducts.svelte";
+  import IMask from 'imask';
+
   const { cartProducts, totalPrice, deleteProductFromCart, clearCart, plusProductFromCart, minusProductFromCart } = createProductsCart();
 
     // Змінні для форми
@@ -23,38 +26,35 @@
 		showOrderForm = true; // Показати форму і приховати кнопку Order
 	}
 
-  async function fetchCities(event) {
-    const searchValue = event.target.value;
-
-    if (event.target.id === "city" && searchValue.length === 0) {
-    // Очищення обраного відділення та списку відділень
-      city = "";
-      selectedCityRef = "";
-      cities = [];
-    }
-
-    // Перевірка довжини введення
-    if (searchValue.length < 3) {
-      cities = []; // Очищаємо список міст, якщо введення менше 3 символів
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/nposhta/cities?findByCity=${encodeURIComponent(searchValue)}`
-      );
-      const data = await response.json();
-
-      if (data.success) {
-        cities = data.data; // Зберігаємо список міст
-      } else {
-        cities = []; // Очищаємо список, якщо запит не успішний
-      }
-    } catch (error) {
-      console.error("Error fetching cities:", error);
-      cities = [];
-    }
-  }
+  function inputPhoneMask(node) {
+ 		const mask = IMask(node, {
+ 			mask: '+{38} 000 000 00 00',
+ 			lazy: false // показує маску навіть до введення
+ 		});
+ 
+ 		mask.on('accept', () => {
+ 			phone = mask.unmaskedValue; // отримуємо: 380XXXXXXXXX
+ 		});
+ 
+ 		// Фокус — встановлюємо курсор після +38
+ 		function onFocus() {
+ 			setTimeout(() => {
+ 				// Якщо тільки +38 — ставимо курсор після нього
+ 				if (mask.value.startsWith('+38') && mask.unmaskedValue.length < 4) {
+ 					mask.cursorPos = mask.value.length; // або просто 4
+ 				}
+ 			}, 0);
+ 		}
+ 
+ 		node.addEventListener('focus', onFocus);
+ 
+ 		return {
+ 			destroy() {
+ 				node.removeEventListener('focus', onFocus);
+ 				mask.destroy();
+ 			}
+ 		};
+ 	}
 
 	async function submitOrder() {
 		// Збираємо дані форми
@@ -243,8 +243,8 @@
                 <input
                   id="phone"
                   type="text"
-                  bind:value={phone}
-                  placeholder="Your phone"
+                  use:inputPhoneMask
+                  placeholder="+38 ___ ___ __ __"
                   class="input input-bordered w-full"
                   required
                 />
