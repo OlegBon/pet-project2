@@ -27,34 +27,34 @@
 	}
 
   function inputPhoneMask(node) {
- 		const mask = IMask(node, {
- 			mask: '+{38} 000 000 00 00',
+    const mask = IMask(node, {
+    mask: '+{38} 000 000 00 00',
  			lazy: false // показує маску навіть до введення
- 		});
- 
- 		mask.on('accept', () => {
+    });
+
+    mask.on('accept', () => {
  			phone = mask.unmaskedValue; // отримуємо: 380XXXXXXXXX
- 		});
- 
+    });
+
  		// Фокус — встановлюємо курсор після +38
- 		function onFocus() {
- 			setTimeout(() => {
+    function onFocus() {
+      setTimeout(() => {
  				// Якщо тільки +38 — ставимо курсор після нього
- 				if (mask.value.startsWith('+38') && mask.unmaskedValue.length < 4) {
- 					mask.cursorPos = mask.value.length; // або просто 4
- 				}
- 			}, 0);
- 		}
- 
- 		node.addEventListener('focus', onFocus);
- 
- 		return {
- 			destroy() {
- 				node.removeEventListener('focus', onFocus);
- 				mask.destroy();
- 			}
- 		};
- 	}
+        if (mask.value.startsWith('+38') && mask.unmaskedValue.length < 4) {
+          mask.cursorPos = mask.value.length; // або просто 4
+      }
+      }, 0);
+    }
+
+    node.addEventListener('focus', onFocus);
+
+    return {
+      destroy() {
+        node.removeEventListener('focus', onFocus);
+        mask.destroy();
+      }
+    };
+  }
 
 	async function submitOrder() {
 		// Збираємо дані форми
