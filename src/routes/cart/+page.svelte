@@ -56,60 +56,6 @@
     }
   }
 
-  // function selectCity(selectedCity) {
-  //   city = selectedCity.Description; // Підставляємо назву міста у прив'язаний інпут
-  //   selectedCityRef = selectedCity.Ref; // Зберігаємо cityRef для подальшого використання
-  //   cities = []; // Очищаємо список після вибору
-
-  //   // console.log("Selected city:", selectedCity.Description);
-  //   // console.log("City Ref:", selectedCity.Ref);
-  // }
-
-  // async function fetchBranches(event) {
-  //   const searchValue = event.target.value;
-
-  //   if (event.target.id === "branch" && searchValue.length === 0) {
-  //   // Очищення обраного відділення та списку відділень
-  //     branch = "";
-  //     selectedBranchRef = "";
-  //     branches = [];
-  //   }
-
-  //   // Формування параметра пошуку залежно від типу введення
-  //   let apiUrl = "";
-  //   if (/^\d+$/.test(searchValue)) {
-  //     apiUrl = `http://127.0.0.1:8000/api/nposhta/branches?cityRef=${encodeURIComponent(selectedCityRef)}&findByBranch=${searchValue}`;
-  //   } else if (searchValue.length >= 3) {
-  //     apiUrl = `http://127.0.0.1:8000/api/nposhta/branches?cityRef=${encodeURIComponent(selectedCityRef)}&findByBranch=${encodeURIComponent(searchValue)}`;
-  //   } else {
-  //     branches = [];
-  //     return;
-  //   }
-
-  //   try {
-  //     // console.log("API URL:", apiUrl); // Логування URL
-  //     const response = await fetch(apiUrl);
-  //     const data = await response.json();
-
-  //     // console.log("API Response:", data); // Логування відповіді
-
-  //     if (data.success) {
-  //       branches = data.data; // Зберігаємо список відділень
-  //     } else {
-  //       branches = []; // Очищаємо список, якщо запит не успішний
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching branches:", error);
-  //     branches = [];
-  //   }
-  // }
-
-  // function selectBranch(selectedBranch) {
-  //   branch = `${selectedBranch.Description}, No. ${selectedBranch.Number}`; // Підставляємо вибране відділення у поле вводу
-  //   selectedBranchRef = selectedBranch.Ref; // Зберігаємо Ref для подальшого використання
-  //   branches = []; // Очищаємо список після вибору
-  // }
-
 	async function submitOrder() {
 		// Збираємо дані форми
 		const items = cartProducts.map((p) => ({
@@ -303,17 +249,6 @@
                   required
                 />
               </div>
-              <!-- <div class="q-mb-md">
-                <label for="address">Address:</label>
-                <input
-                  id="address"
-                  type="text"
-                  bind:value={address}
-                  placeholder="Your address"
-                  class="input input-bordered w-full"
-                  required
-                />
-              </div> -->
   
               <!-- Вибір способу доставки -->
               <div class="q-mb-md mt-10">
@@ -349,50 +284,6 @@
   
               <!-- Поля для Нової Пошти -->
               {#if deliveryMethod === "nposhta"}
-              <!-- <div class="q-mb-md">
-                <label for="city">City:</label>
-                <input
-                  id="city"
-                  type="text"
-                  bind:value={city}
-                  on:input="{fetchCities}"
-                  placeholder="Your city"
-                  class="input input-bordered w-full"
-                  required
-                /> -->
-                <!-- Список міст -->
-                <!-- {#if cities.length > 0}
-                <ul class="city-list">
-                  {#each cities as city}
-                  <li on:click={() => selectCity(city)}>
-                    {city.Description}
-                  </li>
-                  {/each}
-                </ul>
-                {/if}
-              </div>
-              <div class="q-mb-md">
-                <label for="branch">Branch:</label>
-                <input
-                  id="branch"
-                  type="text"
-                  bind:value={branch}
-                  on:input="{fetchBranches}"
-                  placeholder="Your branch/address"
-                  class="input input-bordered w-full"
-                  required
-                /> -->
-                <!-- Список відділень -->
-                <!-- {#if branches.length > 0}
-                <ul class="branch-list">
-                  {#each branches as branch}
-                  <li on:click={() => selectBranch(branch)}>
-                    {branch.Description}, No. {branch.Number}
-                  </li>
-                  {/each}
-                </ul>
-                {/if}
-              </div> -->
               <NovaPoshtaSelector bind:city bind:cities bind:selectedCityRef bind:branch bind:branches bind:selectedBranchRef />
               {/if}
               <!-- Кнопка Submit -->
