@@ -84,6 +84,7 @@
       on:input="{fetchCities}"
       placeholder="Your city"
       class="input input-bordered w-full"
+      required
     />
     {#if cities.length > 0}
       <ul class="city-list">
@@ -105,6 +106,7 @@
         on:input="{fetchBranches}"
         placeholder="Your branch/address"
         class="input input-bordered w-full"
+        required
       />
       {#if branches.length > 0}
         <ul class="branch-list">
