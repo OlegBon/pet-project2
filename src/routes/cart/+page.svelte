@@ -1,6 +1,7 @@
 <script>
-    import { createProductsCart } from "../../runes/cartProducts.svelte";
-    const { cartProducts, totalPrice, deleteProductFromCart, clearCart, plusProductFromCart, minusProductFromCart } = createProductsCart();
+  import NovaPoshtaSelector from "../../components/NovaPoshtaSelector.svelte";
+  import { createProductsCart } from "../../runes/cartProducts.svelte";
+  const { cartProducts, totalPrice, deleteProductFromCart, clearCart, plusProductFromCart, minusProductFromCart } = createProductsCart();
 
     // Змінні для форми
 	let showOrderForm = false;
@@ -10,13 +11,13 @@
 
   let deliveryMethod = "nposhta"; // Спосіб доставки (за замовчуванням - Нова Пошта)
 
-  let city = ""; // Текст у полі міста
-  let cities = []; // Список міст
-  let selectedCityRef = ""; // Збережений cityRef для вибраного міста
+  export let city = ""; // Текст у полі міста
+  export let cities = []; // Список міст
+  export let selectedCityRef = ""; // Збережений cityRef для вибраного міста
 
-  let branch = ""; // Текст у полі відділення
-  let branches = []; // Список відділень
-  let selectedBranchRef = ""; // Ref вибраного відділення
+  export let branch = ""; // Текст у полі відділення
+  export let branches = []; // Список відділень
+  export let selectedBranchRef = ""; // Ref вибраного відділення
 
 	function toggleOrderForm() {
 		showOrderForm = true; // Показати форму і приховати кнопку Order
@@ -55,59 +56,59 @@
     }
   }
 
-  function selectCity(selectedCity) {
-    city = selectedCity.Description; // Підставляємо назву міста у прив'язаний інпут
-    selectedCityRef = selectedCity.Ref; // Зберігаємо cityRef для подальшого використання
-    cities = []; // Очищаємо список після вибору
+  // function selectCity(selectedCity) {
+  //   city = selectedCity.Description; // Підставляємо назву міста у прив'язаний інпут
+  //   selectedCityRef = selectedCity.Ref; // Зберігаємо cityRef для подальшого використання
+  //   cities = []; // Очищаємо список після вибору
 
-    // console.log("Selected city:", selectedCity.Description);
-    // console.log("City Ref:", selectedCity.Ref);
-  }
+  //   // console.log("Selected city:", selectedCity.Description);
+  //   // console.log("City Ref:", selectedCity.Ref);
+  // }
 
-  async function fetchBranches(event) {
-    const searchValue = event.target.value;
+  // async function fetchBranches(event) {
+  //   const searchValue = event.target.value;
 
-    if (event.target.id === "branch" && searchValue.length === 0) {
-    // Очищення обраного відділення та списку відділень
-      branch = "";
-      selectedBranchRef = "";
-      branches = [];
-    }
+  //   if (event.target.id === "branch" && searchValue.length === 0) {
+  //   // Очищення обраного відділення та списку відділень
+  //     branch = "";
+  //     selectedBranchRef = "";
+  //     branches = [];
+  //   }
 
-    // Формування параметра пошуку залежно від типу введення
-    let apiUrl = "";
-    if (/^\d+$/.test(searchValue)) {
-      apiUrl = `http://127.0.0.1:8000/api/nposhta/branches?cityRef=${encodeURIComponent(selectedCityRef)}&findByBranch=${searchValue}`;
-    } else if (searchValue.length >= 3) {
-      apiUrl = `http://127.0.0.1:8000/api/nposhta/branches?cityRef=${encodeURIComponent(selectedCityRef)}&findByBranch=${encodeURIComponent(searchValue)}`;
-    } else {
-      branches = [];
-      return;
-    }
+  //   // Формування параметра пошуку залежно від типу введення
+  //   let apiUrl = "";
+  //   if (/^\d+$/.test(searchValue)) {
+  //     apiUrl = `http://127.0.0.1:8000/api/nposhta/branches?cityRef=${encodeURIComponent(selectedCityRef)}&findByBranch=${searchValue}`;
+  //   } else if (searchValue.length >= 3) {
+  //     apiUrl = `http://127.0.0.1:8000/api/nposhta/branches?cityRef=${encodeURIComponent(selectedCityRef)}&findByBranch=${encodeURIComponent(searchValue)}`;
+  //   } else {
+  //     branches = [];
+  //     return;
+  //   }
 
-    try {
-      // console.log("API URL:", apiUrl); // Логування URL
-      const response = await fetch(apiUrl);
-      const data = await response.json();
+  //   try {
+  //     // console.log("API URL:", apiUrl); // Логування URL
+  //     const response = await fetch(apiUrl);
+  //     const data = await response.json();
 
-      // console.log("API Response:", data); // Логування відповіді
+  //     // console.log("API Response:", data); // Логування відповіді
 
-      if (data.success) {
-        branches = data.data; // Зберігаємо список відділень
-      } else {
-        branches = []; // Очищаємо список, якщо запит не успішний
-      }
-    } catch (error) {
-      console.error("Error fetching branches:", error);
-      branches = [];
-    }
-  }
+  //     if (data.success) {
+  //       branches = data.data; // Зберігаємо список відділень
+  //     } else {
+  //       branches = []; // Очищаємо список, якщо запит не успішний
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching branches:", error);
+  //     branches = [];
+  //   }
+  // }
 
-  function selectBranch(selectedBranch) {
-    branch = `${selectedBranch.Description}, No. ${selectedBranch.Number}`; // Підставляємо вибране відділення у поле вводу
-    selectedBranchRef = selectedBranch.Ref; // Зберігаємо Ref для подальшого використання
-    branches = []; // Очищаємо список після вибору
-  }
+  // function selectBranch(selectedBranch) {
+  //   branch = `${selectedBranch.Description}, No. ${selectedBranch.Number}`; // Підставляємо вибране відділення у поле вводу
+  //   selectedBranchRef = selectedBranch.Ref; // Зберігаємо Ref для подальшого використання
+  //   branches = []; // Очищаємо список після вибору
+  // }
 
 	async function submitOrder() {
 		// Збираємо дані форми
@@ -348,7 +349,7 @@
   
               <!-- Поля для Нової Пошти -->
               {#if deliveryMethod === "nposhta"}
-              <div class="q-mb-md">
+              <!-- <div class="q-mb-md">
                 <label for="city">City:</label>
                 <input
                   id="city"
@@ -358,9 +359,9 @@
                   placeholder="Your city"
                   class="input input-bordered w-full"
                   required
-                />
+                /> -->
                 <!-- Список міст -->
-                {#if cities.length > 0}
+                <!-- {#if cities.length > 0}
                 <ul class="city-list">
                   {#each cities as city}
                   <li on:click={() => selectCity(city)}>
@@ -380,9 +381,9 @@
                   placeholder="Your branch/address"
                   class="input input-bordered w-full"
                   required
-                />
+                /> -->
                 <!-- Список відділень -->
-                {#if branches.length > 0}
+                <!-- {#if branches.length > 0}
                 <ul class="branch-list">
                   {#each branches as branch}
                   <li on:click={() => selectBranch(branch)}>
@@ -391,7 +392,8 @@
                   {/each}
                 </ul>
                 {/if}
-              </div>
+              </div> -->
+              <NovaPoshtaSelector bind:city bind:cities bind:selectedCityRef bind:branch bind:branches bind:selectedBranchRef />
               {/if}
               <!-- Кнопка Submit -->
               <div style="margin-top: 1rem; text-align: center;">
