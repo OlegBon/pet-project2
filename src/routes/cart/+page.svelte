@@ -1,15 +1,15 @@
 <script>
-	import { onMount } from "svelte";
   import NovaPoshtaSelector from "../../components/NovaPoshtaSelector.svelte";
   import { createProductsCart } from "../../runes/cartProducts.svelte";
-  import IMask from 'imask';
 
   const { cartProducts, totalPrice, deleteProductFromCart, clearCart, plusProductFromCart, minusProductFromCart } = createProductsCart();
 
     // Змінні для форми
 	let showOrderForm = false;
 	let name = '';
-	let phone = '';
+  let phone = '+380 (--) --- -- --'; // Форматований номер телефону
+	let rawPhone = '';
+	let inputRef;
 	let address = '';
 
   let deliveryMethod = "nposhta"; // Спосіб доставки (за замовчуванням - Нова Пошта)
@@ -26,35 +26,42 @@
 		showOrderForm = true; // Показати форму і приховати кнопку Order
 	}
 
-  function inputPhoneMask(node) {
-    const mask = IMask(node, {
-    mask: '+{38} 000 000 00 00',
- 			lazy: false // показує маску навіть до введення
-    });
+  function handleInput(event) {
+		let digits = event.target.value.replace(/\D/g, '');
 
-    mask.on('accept', () => {
- 			phone = mask.unmaskedValue; // отримуємо: 380XXXXXXXXX
-    });
+		// Видаляємо 380, якщо користувач спробував ввести його вручну
+		if (digits.startsWith('380')) {
+			digits = digits.slice(3);
+		}
 
- 		// Фокус — встановлюємо курсор після +38
-    function onFocus() {
-      setTimeout(() => {
- 				// Якщо тільки +38 — ставимо курсор після нього
-        if (mask.value.startsWith('+38') && mask.unmaskedValue.length < 4) {
-          mask.cursorPos = mask.value.length; // або просто 4
-      }
-      }, 0);
-    }
+		// Тільки перші 9 цифр (після 380)
+		digits = digits.slice(0, 9);
 
-    node.addEventListener('focus', onFocus);
+		rawPhone = '380' + digits;
 
-    return {
-      destroy() {
-        node.removeEventListener('focus', onFocus);
-        mask.destroy();
-      }
-    };
-  }
+		let formatted = '+380 ';
+		if (digits.length > 0) {
+			formatted += '(' + digits.slice(0, 2);
+		}
+		if (digits.length >= 2) {
+			formatted += ') ' + digits.slice(2, 5);
+		}
+		if (digits.length >= 5) {
+			formatted += ' ' + digits.slice(5, 7);
+		}
+		if (digits.length >= 7) {
+			formatted += ' ' + digits.slice(7, 9);
+		}
+
+		phone = formatted;
+	}
+
+	function setInitialFocus() {
+		setTimeout(() => {
+			const pos = '+380 ('.length;
+			inputRef.setSelectionRange(pos, pos);
+		}, 0);
+	}
 
 	async function submitOrder() {
 		// Збираємо дані форми
@@ -70,7 +77,7 @@
 		// Створюємо об'єкт для відправлення
 		const orderData = {
 			name,
-			phone,
+			phone: rawPhone, // Відправляємо номер телефону без форматування
 			address: deliveryMethod === 'courier' ? address : '',
 			delivery_method: deliveryMethod,
       np_city: deliveryMethod === 'nposhta' ? city : '', // Якщо доставка Нова Пошта, передаємо місто
@@ -243,8 +250,11 @@
                 <input
                   id="phone"
                   type="text"
-                  use:inputPhoneMask
-                  placeholder="+38 ___ ___ __ __"
+                  bind:this={inputRef}
+                  bind:value={phone}
+                  on:input={handleInput}
+                  on:focus={setInitialFocus}
+                  placeholder="+380 (--) --- -- --"
                   class="input input-bordered w-full"
                   required
                 />
