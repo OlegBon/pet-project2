@@ -171,228 +171,234 @@
 </script>
 
 <div style="text-align:center;">
-    <h1>Welcome to Cart Producrs</h1>
-    <div class="overflow-x-auto">
-        <table class="table">
-          <!-- head -->
-          <thead>
-            <tr>
-              <th>
-                <label>
-                  <input type="checkbox" class="checkbox" />
-                </label>
-              </th>
-              <th>Product	</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th style="width: 128px;">Count</th>
-              <!-- Додали стовпець для кількості -->
-              <th></th>
-              <!-- Стовпець для кнопки видалення -->
-            </tr>
-          </thead>
-          <tbody>
-            {#each cartProducts as product, index}
-            <tr>
+    <h1 class="mt-10">Welcome to Cart Producrs</h1>
+    {#if cartProducts.length === 0}
+        <h2 class="mt-10">Your cart is empty. Please add some products.</h2>
+    {/if}
+    {#if cartProducts.length > 0}
+        <h2 class="mt-10">Products in your cart: {cartProducts.length}</h2>
+        <div class="overflow-x-auto mt-10">
+          <table class="table">
+            <!-- head -->
+            <thead>
+              <tr>
                 <th>
                   <label>
                     <input type="checkbox" class="checkbox" />
                   </label>
                 </th>
-                <td>
-                  <div class="flex items-center gap-3">
-                    <div class="avatar">
-                      <div class="mask mask-squircle h-12 w-12">
-                        <img
-                          src={product.thumbnail}
-                          alt={product.title} />
+                <th>Product	</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th style="width: 128px;">Count</th>
+                <!-- Додали стовпець для кількості -->
+                <th></th>
+                <!-- Стовпець для кнопки видалення -->
+              </tr>
+            </thead>
+            <tbody>
+              {#each cartProducts as product, index}
+              <tr>
+                  <th>
+                    <label>
+                      <input type="checkbox" class="checkbox" />
+                    </label>
+                  </th>
+                  <td>
+                    <div class="flex items-center gap-3">
+                      <div class="avatar">
+                        <div class="mask mask-squircle h-12 w-12">
+                          <img
+                            src={product.thumbnail}
+                            alt={product.title} />
+                        </div>
+                      </div>
+                      <div>
+                        <div class="font-bold">{product.title}</div>
+                        <div class="text-sm opacity-50">{product.category}</div>
                       </div>
                     </div>
-                    <div>
-                      <div class="font-bold">{product.title}</div>
-                      <div class="text-sm opacity-50">{product.category}</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                    {product.description}
-                  <br />
-                  <span class="badge badge-ghost badge-sm">{product.warrantyInformation}</span>
-                </td>
-
-                <td><strong>{product.price} $</strong></td>
-    
-                <td>
-                  <button class="btn btn-xs" on:click={() => minusProductFromCart(index)}>-</button>
-                  <span class="mx-2">{product.count}</span>
-                  <button class="btn btn-xs" on:click={() => plusProductFromCart(index)}>+</button>
-                </td>
-    
-                <th>
-                    <button 
-                    class="btn" aria-label="Delete" on:click={() => deleteProductFromCart(index)}
-                >
-                <svg class="v-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 7H20" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M6 7V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V7" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                </th>
+                  </td>
+                  <td>
+                      {product.description}
+                    <br />
+                    <span class="badge badge-ghost badge-sm">{product.warrantyInformation}</span>
+                  </td>
+  
+                  <td><strong>{product.price} $</strong></td>
+      
+                  <td>
+                    <button class="btn btn-xs" on:click={() => minusProductFromCart(index)}>-</button>
+                    <span class="mx-2">{product.count}</span>
+                    <button class="btn btn-xs" on:click={() => plusProductFromCart(index)}>+</button>
+                  </td>
+      
+                  <th>
+                      <button 
+                      class="btn" aria-label="Delete" on:click={() => deleteProductFromCart(index)}
+                  >
+                  <svg class="v-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 7H20" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M6 7V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V7" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                  </button>
+                  </th>
+                </tr>
+              {/each}
+            </tbody>
+            <!-- foot -->
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>Product	</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Count</th>
+                <!-- Додали стовпець для кількості -->
+                <th></th>
+                <!-- Стовпець для кнопки видалення -->
               </tr>
-            {/each}
-          </tbody>
-          <!-- foot -->
-          <tfoot>
-            <tr>
-              <th></th>
-              <th>Product	</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Count</th>
-              <!-- Додали стовпець для кількості -->
-              <th></th>
-              <!-- Стовпець для кнопки видалення -->
-            </tr>
-            <tr>
-              <th></th>
-              <th></th>              
-              <th class="text-right"><strong>Total</strong></th>
-              <th><strong>${totalPrice(cartProducts)}</strong></th>
-              <th></th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-
-      <!-- Кнопка "Order" (показуємо тільки якщо showOrderForm == false і cartProducts.length > 0) -->
-      {#if !showOrderForm && cartProducts.length > 0}
-        <button class="btn btn-primary q-mt-md" on:click={toggleOrderForm}> Order </button>
-      {/if}
-
-      <!-- Якщо showOrderForm, показуємо форму -->
-      {#if showOrderForm}
-        <!-- Блок форми-->
-        <div class="q-mt-md" style="max-width: 300px; margin: 0 auto; text-align: left;">
-          <form on:submit|preventDefault={submitOrder}>
-            <div class="q-mb-md">
-              <label for="name">Name:</label>
-              <input
-                id="name"
-                type="text"
-                bind:value={name}
-                placeholder="Your name"
-                class="input input-bordered w-full"
-                required
-              />
-            </div>
-            <div class="q-mb-md">
-              <label for="phone">Phone number:</label>
-              <input
-                id="phone"
-                type="text"
-                bind:value={phone}
-                placeholder="Your phone"
-                class="input input-bordered w-full"
-                required
-              />
-            </div>
-            <!-- <div class="q-mb-md">
-              <label for="address">Address:</label>
-              <input
-                id="address"
-                type="text"
-                bind:value={address}
-                placeholder="Your address"
-                class="input input-bordered w-full"
-                required
-              />
-            </div> -->
-
-            <!-- Вибір способу доставки -->
-            <div class="q-mb-md mt-10">
-              <label>Delivery method:</label>
-              <div>
-                <label>
-                  <input type="radio" bind:group={deliveryMethod} value="courier" />
-                  Courier
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input type="radio" bind:group={deliveryMethod} value="nposhta" />
-                  Nova Poshta
-                </label>
-              </div>
-            </div>
-
-            <!-- Поля для Кур'єра -->
-            {#if deliveryMethod === "courier"}
-            <div class="q-mb-md">
-              <label for="address">Address:</label>
-              <input
-                id="address"
-                type="text"
-                bind:value={address}
-                placeholder="Your address"
-                class="input input-bordered w-full"
-                required
-              />
-            </div>
-            {/if}
-
-            <!-- Поля для Нової Пошти -->
-            {#if deliveryMethod === "nposhta"}
-            <div class="q-mb-md">
-              <label for="city">City:</label>
-              <input
-                id="city"
-                type="text"
-                bind:value={city}
-                on:input="{fetchCities}"
-                placeholder="Your city"
-                class="input input-bordered w-full"
-                required
-              />
-              <!-- Список міст -->
-              {#if cities.length > 0}
-              <ul class="city-list">
-                {#each cities as city}
-                <li on:click={() => selectCity(city)}>
-                  {city.Description}
-                </li>
-                {/each}
-              </ul>
-              {/if}
-            </div>
-            <div class="q-mb-md">
-              <label for="branch">Branch:</label>
-              <input
-                id="branch"
-                type="text"
-                bind:value={branch}
-                on:input="{fetchBranches}"
-                placeholder="Your branch/address"
-                class="input input-bordered w-full"
-                required
-              />
-              <!-- Список відділень -->
-              {#if branches.length > 0}
-              <ul class="branch-list">
-                {#each branches as branch}
-                <li on:click={() => selectBranch(branch)}>
-                  {branch.Description}, No. {branch.Number}
-                </li>
-                {/each}
-              </ul>
-              {/if}
-            </div>
-            {/if}
-            <!-- Кнопка Submit -->
-            <div style="margin-top: 1rem; text-align: center;">
-              <button type="submit" class="btn btn-success"> Submit </button>
-            </div>
-          </form>
+              <tr>
+                <th></th>
+                <th></th>              
+                <th class="text-right"><strong>Total</strong></th>
+                <th><strong>${totalPrice(cartProducts)}</strong></th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
         </div>
-      {/if}
+  
+        <!-- Кнопка "Order" (показуємо тільки якщо showOrderForm == false і cartProducts.length > 0) -->
+        {#if !showOrderForm && cartProducts.length > 0}
+          <button class="btn btn-primary mt-10" on:click={toggleOrderForm}> Order </button>
+        {/if}
+  
+        <!-- Якщо showOrderForm, показуємо форму -->
+        {#if showOrderForm}
+          <!-- Блок форми-->
+          <div class="q-mt-md" style="max-width: 300px; margin: 0 auto; text-align: left;">
+            <form on:submit|preventDefault={submitOrder}>
+              <div class="q-mb-md">
+                <label for="name">Name:</label>
+                <input
+                  id="name"
+                  type="text"
+                  bind:value={name}
+                  placeholder="Your name"
+                  class="input input-bordered w-full"
+                  required
+                />
+              </div>
+              <div class="q-mb-md">
+                <label for="phone">Phone number:</label>
+                <input
+                  id="phone"
+                  type="text"
+                  bind:value={phone}
+                  placeholder="Your phone"
+                  class="input input-bordered w-full"
+                  required
+                />
+              </div>
+              <!-- <div class="q-mb-md">
+                <label for="address">Address:</label>
+                <input
+                  id="address"
+                  type="text"
+                  bind:value={address}
+                  placeholder="Your address"
+                  class="input input-bordered w-full"
+                  required
+                />
+              </div> -->
+  
+              <!-- Вибір способу доставки -->
+              <div class="q-mb-md mt-10">
+                <label>Delivery method:</label>
+                <div>
+                  <label>
+                    <input type="radio" bind:group={deliveryMethod} value="courier" />
+                    Courier
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <input type="radio" bind:group={deliveryMethod} value="nposhta" />
+                    Nova Poshta
+                  </label>
+                </div>
+              </div>
+  
+              <!-- Поля для Кур'єра -->
+              {#if deliveryMethod === "courier"}
+              <div class="q-mb-md">
+                <label for="address">Address:</label>
+                <input
+                  id="address"
+                  type="text"
+                  bind:value={address}
+                  placeholder="Your address"
+                  class="input input-bordered w-full"
+                  required
+                />
+              </div>
+              {/if}
+  
+              <!-- Поля для Нової Пошти -->
+              {#if deliveryMethod === "nposhta"}
+              <div class="q-mb-md">
+                <label for="city">City:</label>
+                <input
+                  id="city"
+                  type="text"
+                  bind:value={city}
+                  on:input="{fetchCities}"
+                  placeholder="Your city"
+                  class="input input-bordered w-full"
+                  required
+                />
+                <!-- Список міст -->
+                {#if cities.length > 0}
+                <ul class="city-list">
+                  {#each cities as city}
+                  <li on:click={() => selectCity(city)}>
+                    {city.Description}
+                  </li>
+                  {/each}
+                </ul>
+                {/if}
+              </div>
+              <div class="q-mb-md">
+                <label for="branch">Branch:</label>
+                <input
+                  id="branch"
+                  type="text"
+                  bind:value={branch}
+                  on:input="{fetchBranches}"
+                  placeholder="Your branch/address"
+                  class="input input-bordered w-full"
+                  required
+                />
+                <!-- Список відділень -->
+                {#if branches.length > 0}
+                <ul class="branch-list">
+                  {#each branches as branch}
+                  <li on:click={() => selectBranch(branch)}>
+                    {branch.Description}, No. {branch.Number}
+                  </li>
+                  {/each}
+                </ul>
+                {/if}
+              </div>
+              {/if}
+              <!-- Кнопка Submit -->
+              <div style="margin-top: 1rem; text-align: center;">
+                <button type="submit" class="btn btn-success"> Submit </button>
+              </div>
+            </form>
+          </div>
+        {/if}
+    {/if}
 </div>
