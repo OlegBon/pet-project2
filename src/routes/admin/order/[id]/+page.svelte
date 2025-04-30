@@ -94,7 +94,7 @@
 			count: 1
 		});
  		// Оновлюємо посилання, щоб Svelte побачив зміни
-		 data.order.items = [...data.order.items];
+		data.order.items = [...data.order.items];
 	}
 
  	// Видалити товар (DELETE /api/orders/orderId}/items/{itemId})
@@ -156,7 +156,7 @@
 						<th></th>
 						<th>Name</th>
 						<th>Phone</th>
-						<th>Delivery Method</th>
+						<th>Total</th>
 						<th>Status</th>
 						<th></th>
 					</tr>
@@ -167,14 +167,14 @@
 							<td></td>
 							<td>{data.order.name}</td>
 							<td>{data.order.phone}</td>
-							<td>{data.order.delivery_method}</td>
+							<td>{data.order.total}</td>
 							<td>
 								<label for="orderStatus">Status:</label>
 								<select id="orderStatus" bind:value={data.order.status}>
-									<option value="pending">Pending</option>
-									<option value="processing">Processing</option>
-									<option value="completed">Completed</option>
-									<option value="cancelled">Cancelled</option>
+									<option value="Pending">Pending</option>
+									<option value="Processing">Processing</option>
+									<option value="Completed">Completed</option>
+									<option value="Cancelled">Cancelled</option>
 								</select>
 							</td>
 							<td></td>
@@ -185,6 +185,9 @@
 				</tfoot>
 			</table>
 		</div>
+
+		<!-- Поля доставки -->
+		<h3 class="page-title margin-top-40">Order Delivery</h3>
 
 		<h3 class="page-title margin-top-40">Order Details</h3>
 		<div class="overflow-x-auto">

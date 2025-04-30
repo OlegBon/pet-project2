@@ -14,13 +14,13 @@
 
   let deliveryMethod = "nposhta"; // Спосіб доставки (за замовчуванням - Нова Пошта)
 
-  export let city = ""; // Текст у полі міста
-  export let cities = []; // Список міст
-  export let selectedCityRef = ""; // Збережений cityRef для вибраного міста
+  let city = ""; // Текст у полі міста
+  let cities = []; // Список міст
+  let selectedCityRef = ""; // Збережений cityRef для вибраного міста
 
-  export let branch = ""; // Текст у полі відділення
-  export let branches = []; // Список відділень
-  export let selectedBranchRef = ""; // Ref вибраного відділення
+  let branch = ""; // Текст у полі відділення
+  let branches = []; // Список відділень
+  let selectedBranchRef = ""; // Ref вибраного відділення
 
 	function toggleOrderForm() {
 		showOrderForm = true; // Показати форму і приховати кнопку Order
